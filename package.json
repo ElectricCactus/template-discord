@@ -38,5 +38,8 @@
   },
   "prettier": {
     "printWidth": 80
+  },
+  "dependencies": {
+    "discord.js": "14.3.0"
   }
 }

@@ -1,18 +1,28 @@
-import { ChatInputCommandInteraction, SlashCommandBuilder } from "discord.js";
+import {
+  ChatInputCommandInteraction,
+  Client,
+  SlashCommandBuilder,
+} from "discord.js";
 
-export type DiscordAPIApplicationCommandOption = ReturnType<
+export type DiscordApplicationCommandOption = ReturnType<
   SlashCommandBuilder["toJSON"]
 >;
 
+export type DiscordChatCommandContext<T = DiscordChatCommand> = {
+  command: T;
+  client: Client;
+};
+
 export interface DiscordChatCommand {
-  option: DiscordAPIApplicationCommandOption;
+  option: DiscordApplicationCommandOption;
   handler: (
     interaction: ChatInputCommandInteraction,
-    command: this
+    context: DiscordChatCommandContext<this>
   ) => Promise<void> | void;
 }
 
 export async function handleInteraction(
+  client: Client,
   commands: DiscordChatCommand[],
   interaction: ChatInputCommandInteraction
 ) {
@@ -20,5 +30,5 @@ export async function handleInteraction(
     (command) => command.option.name === interaction.commandName
   );
   if (!command) return;
-  await command.handler(interaction, command);
+  await command.handler(interaction, { command, client });
 }

@@ -3,7 +3,9 @@
   "name": "template-ts",
   "version": "1.0.0",
   "description": "Default template for TypeScript projects",
+  "main": "dist/index.js",
   "scripts": {
+    "dev": "ts-node src/index.ts",
     "build": "esbuild src/index.ts --platform=node --bundle --outdir=dist",
     "lint": "eslint src/ --ext .ts",
     "test": "jest",

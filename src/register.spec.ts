@@ -7,7 +7,9 @@ const SampleCommand: DiscordChatCommand = {
     .setName("sample")
     .setDescription("Sample Command")
     .toJSON(),
-  handler: async () => {},
+  handler: async () => {
+    // do nothing
+  },
 };
 
 const getMock = jest.fn();
@@ -21,7 +23,9 @@ jest.mock("@discordjs/rest", () => ({
   })),
 }));
 
-const logNoop = () => {};
+const logNoop = () => {
+  //noop
+};
 
 beforeEach(() => {
   jest.clearAllMocks();

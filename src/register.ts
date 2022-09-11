@@ -10,7 +10,12 @@ export async function registerCommands(
   log = console.log
 ): Promise<void> {
   const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;
-  const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN!);
+
+  if (!DISCORD_TOKEN || !DISCORD_CLIENT_ID) {
+    throw new Error("Missing DISCORD_TOKEN or DISCORD_CLIENT_ID");
+  }
+
+  const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
 
   const userGuilds = (await rest.get(Routes.userGuilds())) as {
     id: string;
@@ -22,7 +27,7 @@ export async function registerCommands(
 
   for (const { id } of userGuilds) {
     try {
-      await rest.put(Routes.applicationGuildCommands(DISCORD_CLIENT_ID!, id), {
+      await rest.put(Routes.applicationGuildCommands(DISCORD_CLIENT_ID, id), {
         body: commands.map((command) => command.option),
       });
     } catch (error) {

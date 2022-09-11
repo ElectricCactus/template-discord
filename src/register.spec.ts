@@ -1,5 +1,14 @@
-import { TestCommand } from "./commands/test";
+import { SlashCommandBuilder } from "discord.js";
+import { DiscordChatCommand } from "./command";
 import { registerCommands } from "./register";
+
+const SampleCommand: DiscordChatCommand = {
+  option: new SlashCommandBuilder()
+    .setName("sample")
+    .setDescription("Sample Command")
+    .toJSON(),
+  handler: async () => {},
+};
 
 const getMock = jest.fn();
 const putMock = jest.fn();
@@ -29,12 +38,12 @@ describe("registerCommands", () => {
   it("should register 1 commands to 1 guild", async () => {
     getMock.mockResolvedValueOnce([{ id: "1" }]);
     await expect(
-      registerCommands([TestCommand], logNoop)
+      registerCommands([SampleCommand], logNoop)
     ).resolves.toBeUndefined();
     expect(getMock).toHaveBeenCalledTimes(1);
     expect(putMock).toHaveBeenCalledTimes(1);
     expect(putMock).toHaveBeenCalledWith(expect.any(String), {
-      body: [TestCommand.option],
+      body: [SampleCommand.option],
     });
   });
 });

@@ -1,6 +1,6 @@
 import { Client, GatewayIntentBits } from "discord.js";
 import { DiscordChatCommand, handleInteraction } from "./command";
-import { TestCommand } from "./commands/test";
+import { PingCommand } from "./commands/ping";
 import { registerCommands } from "./register";
 
 export async function startBot() {
@@ -8,7 +8,7 @@ export async function startBot() {
 
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-  const commands: DiscordChatCommand[] = [TestCommand];
+  const commands: DiscordChatCommand[] = [PingCommand];
 
   await registerCommands(commands);
 

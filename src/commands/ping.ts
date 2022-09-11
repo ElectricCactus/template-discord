@@ -1,12 +1,12 @@
 import { SlashCommandBuilder } from "discord.js";
 import { DiscordChatCommand } from "../command";
 
-export const TestCommand: DiscordChatCommand = {
+export const PingCommand: DiscordChatCommand = {
   option: new SlashCommandBuilder()
-    .setName("test")
-    .setDescription("Test command")
+    .setName("ping")
+    .setDescription("Ping command")
     .toJSON(),
   handler: async (interaction) => {
-    await interaction.reply("tested");
+    await interaction.reply("pong");
   },
 };

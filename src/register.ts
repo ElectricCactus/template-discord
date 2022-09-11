@@ -6,7 +6,8 @@ import { REST } from "@discordjs/rest";
 import { DiscordChatCommand } from "./command";
 
 export async function registerCommands(
-  commands: DiscordChatCommand[]
+  commands: DiscordChatCommand[],
+  log = console.log
 ): Promise<void> {
   const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;
   const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN!);
@@ -15,7 +16,7 @@ export async function registerCommands(
     id: string;
   }[];
 
-  console.log(
+  log(
     `🥞 Registering ${commands.length} command(s) to ${userGuilds.length} guild(s)`
   );
 
@@ -25,7 +26,7 @@ export async function registerCommands(
         body: commands.map((command) => command.option),
       });
     } catch (error) {
-      console.log("⚠️", inspect(error));
+      log("⚠️", inspect(error));
     }
   }
 }

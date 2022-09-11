@@ -1,9 +1,9 @@
-# Template: TypeScript
+# Template: TypeScript Discord Bot
 
-![Pull Request Workflow Status](https://github.com/mikelittman/template-ts/actions/workflows/pull-request.yml/badge.svg)
+![Pull Request Workflow Status](https://github.com/ElectricCactus/template-discord/actions/workflows/pull-request.yml/badge.svg)
 
 
-This is a template for a TypeScript project.
+This is a template for a Discord Bot TypeScript project.
 
 ## Usage
 

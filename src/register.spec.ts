@@ -28,6 +28,11 @@ const logNoop = () => {
 };
 
 beforeEach(() => {
+  process.env = {
+    ...process.env,
+    DISCORD_TOKEN: "token",
+    DISCORD_CLIENT_ID: "client_id",
+  };
   jest.clearAllMocks();
 });
 

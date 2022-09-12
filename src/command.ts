@@ -1,3 +1,5 @@
+import { inspect } from "util";
+
 import {
   ChatInputCommandInteraction,
   Client,
@@ -24,11 +26,19 @@ export interface DiscordChatCommand {
 export async function handleInteraction(
   client: Client,
   commands: DiscordChatCommand[],
-  interaction: ChatInputCommandInteraction
+  interaction: ChatInputCommandInteraction,
+  log = console.log
 ) {
   const command = commands.find(
     (command) => command.option.name === interaction.commandName
   );
   if (!command) return;
-  await command.handler(interaction, { command, client });
+  try {
+    await command.handler(interaction, { command, client });
+  } catch (err) {
+    log(inspect(err));
+    const message = "Failed to handle interaction";
+    if (interaction.replied) await interaction.editReply(message);
+    else await interaction.reply(message);
+  }
 }

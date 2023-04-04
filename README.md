@@ -10,23 +10,34 @@ This is a template for a Discord Bot TypeScript project.
 ### Install
 
 ```sh
-npm i
+pnpm i
 ```
 
 ### Test
 
 ```sh
-npm t
+pnpm t
+```
+
+### Lint
+
+```sh
+pnpm lint
 ```
 
 ### Type check
 
 ```sh
-npm run tsc
+pnpm tsc
 ```
 
 ### Build
 
 ```sh
-npm run build
+pnpm build
+```
+
+### Pipeline
+```sh
+pnpm pipeline
 ```

@@ -3,9 +3,9 @@ import { inspect } from "util";
 import { Routes } from "discord.js";
 import { REST } from "@discordjs/rest";
 
-import { ChatCommand } from "./command";
+import { Command } from "./command";
 
-export function validateCommands(commands: ChatCommand[]): void {
+export function validateCommands(commands: Command[]): void {
   const names = commands.map((command) => command.option.name);
   const duplicates = names.filter(
     (name, index) => names.indexOf(name) !== index
@@ -44,7 +44,7 @@ export async function unregisterCommands(log = console.log): Promise<void> {
 }
 
 export async function registerCommands(
-  commands: ChatCommand[],
+  commands: Command[],
   log = console.log
 ): Promise<void> {
   const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;

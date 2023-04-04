@@ -10,7 +10,8 @@
     "build": "esbuild src/index.ts --platform=node --bundle --outdir=dist",
     "lint": "eslint src/ --ext .ts",
     "test": "jest",
-    "tsc": "tsc --noEmit"
+    "tsc": "tsc --noEmit",
+    "unregister": "ts-node src/unregister.ts"
   },
   "keywords": [],
   "author": "",

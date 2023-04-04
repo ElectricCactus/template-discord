@@ -1,33 +1,26 @@
-import { Client, GatewayIntentBits } from "discord.js";
+import { Client, Events, GatewayIntentBits } from "discord.js";
 import { registerCleanupFn } from "./cleanup";
-import {
-  ChatCommand,
-  handleAutocomplete,
-  handleChat,
-  handleMessage,
-} from "./command";
+import { Command, handleInteraction, handleMessage } from "./command";
 import { PingCommand } from "./commands/ping";
 import { registerCommands } from "./register";
+import { LikeCommand } from "./commands/like";
 
 export async function main() {
-  const commands: ChatCommand[] = [PingCommand];
+  const commands: Command[] = [LikeCommand, PingCommand];
 
   await registerCommands(commands);
 
   const client = new Client({ intents: [GatewayIntentBits.Guilds] });
 
-  client.once("ready", () => {
+  client.once(Events.ClientReady, () => {
     console.log("✅ Ready!");
   });
 
-  client.on("interactionCreate", async (interaction) => {
-    if (interaction.isChatInputCommand())
-      await handleChat(client, commands, interaction);
-    else if (interaction.isAutocomplete())
-      await handleAutocomplete(client, commands, interaction);
+  client.on(Events.InteractionCreate, async (interaction) => {
+    await handleInteraction(client, commands, interaction);
   });
 
-  client.on("messageCreate", async (message) => {
+  client.on(Events.MessageCreate, async (message) => {
     await handleMessage(client, commands, message);
   });
 

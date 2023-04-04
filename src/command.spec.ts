@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from "discord.js";
-import { ChatCommand, handleChat, resolveCommand } from "./command";
+import { ChatCommand, handleChatInput, resolveCommand } from "./command";
 
 const mockLog = jest.fn();
 
@@ -55,7 +55,7 @@ describe("handleInteraction", () => {
     const mockInteraction: any = mockedInteraction();
     const mockClient: any = {};
     await expect(
-      handleChat(mockClient, [Command], mockInteraction)
+      handleChatInput(mockClient, [Command], mockInteraction)
     ).resolves.toBeUndefined();
     expect(Command.chat).toHaveBeenCalledTimes(1);
     expect(Command.chat).toHaveBeenCalledWith(mockInteraction, {
@@ -72,7 +72,7 @@ describe("handleInteraction", () => {
       handler: jest.fn(),
     };
     await expect(
-      handleChat(
+      handleChatInput(
         {} as any,
         [Command],
         mockedInteraction({ commandName: "bogus" }) as any
@@ -91,7 +91,7 @@ describe("handleInteraction", () => {
     };
     const mockInteraction: any = mockedInteraction();
     await expect(
-      handleChat({} as any, [Command], mockInteraction, mockLog)
+      handleChatInput({} as any, [Command], mockInteraction, mockLog)
     ).resolves.toBeUndefined();
     expect(Command.chat).toHaveBeenCalledTimes(1);
     expect(mockInteraction.reply).toHaveBeenCalledTimes(1);
@@ -107,7 +107,7 @@ describe("handleInteraction", () => {
     };
     const mockInteraction: any = mockedInteraction({ replied: true });
     await expect(
-      handleChat({} as any, [Command], mockInteraction, mockLog)
+      handleChatInput({} as any, [Command], mockInteraction, mockLog)
     ).resolves.toBeUndefined();
     expect(Command.chat).toHaveBeenCalledTimes(1);
     expect(mockInteraction.followUp).toHaveBeenCalledTimes(1);

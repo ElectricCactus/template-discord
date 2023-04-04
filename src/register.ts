@@ -3,9 +3,9 @@ import { inspect } from "util";
 import { Routes } from "discord.js";
 import { REST } from "@discordjs/rest";
 
-import { DiscordChatCommand } from "./command";
+import { ChatCommand } from "./command";
 
-export function validateCommands(commands: DiscordChatCommand[]): void {
+export function validateCommands(commands: ChatCommand[]): void {
   const names = commands.map((command) => command.option.name);
   const duplicates = names.filter(
     (name, index) => names.indexOf(name) !== index
@@ -17,8 +17,34 @@ export function validateCommands(commands: DiscordChatCommand[]): void {
   }
 }
 
+export async function unregisterCommands(log = console.log): Promise<void> {
+  const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;
+
+  if (!DISCORD_TOKEN || !DISCORD_CLIENT_ID) {
+    throw new Error("Missing DISCORD_TOKEN or DISCORD_CLIENT_ID");
+  }
+
+  const rest = new REST({ version: "10" }).setToken(DISCORD_TOKEN);
+
+  const userGuilds = (await rest.get(Routes.userGuilds())) as {
+    id: string;
+  }[];
+
+  log(`🥞 Unregistering all commands in ${userGuilds.length} guild(s)`);
+
+  for (const { id } of userGuilds) {
+    try {
+      await rest.put(Routes.applicationGuildCommands(DISCORD_CLIENT_ID, id), {
+        body: [],
+      });
+    } catch (error) {
+      log("⚠️", inspect(error));
+    }
+  }
+}
+
 export async function registerCommands(
-  commands: DiscordChatCommand[],
+  commands: ChatCommand[],
   log = console.log
 ): Promise<void> {
   const { DISCORD_TOKEN, DISCORD_CLIENT_ID } = process.env;

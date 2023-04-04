@@ -1,10 +1,16 @@
 import { Client, GatewayIntentBits } from "discord.js";
-import { DiscordChatCommand, handleInteraction } from "./command";
+import { registerCleanupFn } from "./cleanup";
+import {
+  ChatCommand,
+  handleAutocomplete,
+  handleChat,
+  handleMessage,
+} from "./command";
 import { PingCommand } from "./commands/ping";
 import { registerCommands } from "./register";
 
 export async function main() {
-  const commands: DiscordChatCommand[] = [PingCommand];
+  const commands: ChatCommand[] = [PingCommand];
 
   await registerCommands(commands);
 
@@ -16,12 +22,20 @@ export async function main() {
 
   client.on("interactionCreate", async (interaction) => {
     if (interaction.isChatInputCommand())
-      await handleInteraction(client, commands, interaction);
+      await handleChat(client, commands, interaction);
+    else if (interaction.isAutocomplete())
+      await handleAutocomplete(client, commands, interaction);
+  });
+
+  client.on("messageCreate", async (message) => {
+    await handleMessage(client, commands, message);
   });
 
   const { DISCORD_TOKEN } = process.env;
 
   client.login(DISCORD_TOKEN);
+
+  registerCleanupFn(() => client.destroy());
 }
 
 if (require.main === module) {

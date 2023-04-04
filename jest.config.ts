@@ -1,6 +1,6 @@
-import type { Config } from "@jest/types";
+import type { Config } from "jest";
 
-const config: Config.InitialOptions = {
+const config: Config = {
   testEnvironment: "node",
   transform: {
     "^.+\\.(t|j)sx?$": "@swc/jest",

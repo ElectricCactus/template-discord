@@ -1,8 +1,8 @@
 import { SlashCommandBuilder } from "discord.js";
-import { DiscordChatCommand } from "./command";
+import { ChatCommand } from "./command";
 import { registerCommands, validateCommands } from "./register";
 
-const SampleCommand: DiscordChatCommand = {
+const SampleCommand: ChatCommand = {
   option: new SlashCommandBuilder()
     .setName("sample")
     .setDescription("Sample Command")
